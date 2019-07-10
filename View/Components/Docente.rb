@@ -24,16 +24,7 @@ class Docente < ModelView
 			q.convert :int
 		end
 
-		uri = URI.parse("#{CRUD::DefUri}/docente/#{filter}/getTalleres")
-		http = Net::HTTP.new(uri.host, uri.port)
-		request = Net::HTTP::Get.new(uri.request_uri)
-		
-		res = http.request(request)
-		jponse = JSON.parse(res.body)
-
-		arr = resultToArray(jponse["rows"])
-
-		RenderTable(arr)
+		ReadUrl("#{CRUD::DefUri}/docente/#{filter}/getTalleres")
 	end	
 
 	def Create()

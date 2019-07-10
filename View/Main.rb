@@ -5,10 +5,13 @@ Dir["./Components/*.rb"].each {|file| require file }
 class MainView
 
 	def initialize()
-		@menu = TTY::Prompt.new()
+		@menu = TTY::Prompt.new(interrupt: :signal)
 	end
 
 	def MainLoop()
+		system('cls')
+		puts CRUD::Titulo
+		puts CRUD::UPC
 		choices = [
 		 	{name: 'Alumnos', value: Alumno.new},
 		 	{name: 'Docente', value: Docente.new},

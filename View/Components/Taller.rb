@@ -27,35 +27,22 @@ class Taller < ModelView
 			q.convert :int
 		end
 
-		uri = URI.parse("#{CRUD::DefUri}/taller/#{filter}/getAlumnos")
-		http = Net::HTTP.new(uri.host, uri.port)
-		request = Net::HTTP::Get.new(uri.request_uri)
-		
-		res = http.request(request)
-		jponse = JSON.parse(res.body)
-
-		arr = resultToArray(jponse["rows"])
-
-		RenderTable(arr)
+		#http://159.203.181.159/alumno/1/getNotas
+		ReadUrl("#{CRUD::DefUri}/taller/#{filter}/getAlumnos")
 	end	
 
 	def GetAll()
-		uri = URI.parse("#{CRUD::DefUri}/getTalleres")
-		http = Net::HTTP.new(uri.host, uri.port)
-		request = Net::HTTP::Get.new(uri.request_uri)
-		
-		res = http.request(request)
-		jponse = JSON.parse(res.body)
-
-		arr = resultToArray(jponse["rows"])
-
-		RenderTable(arr)		
+		ReadUrl("#{CRUD::DefUri}/getTalleres")
 	end
 
 	def Create()
 		data = {}
 		data[:nombre] = @promt.ask("Nombre: ") do |q| q.required true; end;
-		data[:tipoTaller] = @promt.ask("Tipo de Taller: ") do |q| q.required true; end;
+		data[:tipoTaller] = @promt.select("Tipo de Taller: ", active_color: :cyan) do |menu| 
+			menu.choice 'teórico', 'teorico'
+  			menu.choice 'práctico', 'practico'
+  			menu.choice 'blended', 'blended'	
+		end
 		data[:codigo_docente] = @promt.ask("Cod. Docente: ") do |q| 
 			q.validate /[0-9]/
 			q.convert :int
